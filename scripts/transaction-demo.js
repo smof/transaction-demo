@@ -316,7 +316,7 @@ function processSecureTransfer(units) {
 	    		transactionId=JSON.parse(this.responseText)[0].advices.TransactionConditionAdvice[0];
 
 	    		//Send transactionId over to the ../json/authenticate endpoint with compositve
-	    		sendCompositeRequest(transactionId)
+	    		sendCompositeRequest1(transactionId)
 
 	    		
 	    	} else {
