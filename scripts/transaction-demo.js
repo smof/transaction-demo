@@ -235,7 +235,7 @@ function sendCompositeRequest2(transactionId, data){
 //3 second delay for polling
 function pollAM(transactionId,data) {
 
-	setTime(sendCompositeRequest2,3000,transactionId,data);
+	setTimeout(sendCompositeRequest2,3000,transactionId,data);
 }
 
 //Sends composite advice
