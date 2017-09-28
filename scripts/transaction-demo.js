@@ -234,7 +234,8 @@ function sendCompositeRequest2(transactionId, data){
 
 function pollForResult(transactionId, data) {
 
-	sendCompositeRequest2(transactionId, data);
+	
+	setTimeout(sendCompositeRequest2(transactionId, data),10000);
 
 }
 
