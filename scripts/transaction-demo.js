@@ -198,9 +198,6 @@ function processStandardTransfer(units){
 //Sends composite advice
 function sendCompositeRequest2(transactionId, data){
 
-	//Allows passing of the received data payload, first time run through this isn't needed so we default to empty object
-	data = data ? data : ("{}");
-		
 	var xhr = new XMLHttpRequest();
 	xhr.withCredentials = true;
 
@@ -241,10 +238,10 @@ function pollForResult(transactionId, data) {
 
 
 //Sends composite advice
-function sendCompositeRequest1(transactionId, data){
+function sendCompositeRequest1(transactionId){
 
 	//Allows passing of the received data payload, first time run through this isn't needed so we default to empty object
-	data = data ? data : ("{}");
+	data = ("{}");
 		
 	var xhr = new XMLHttpRequest();
 	xhr.withCredentials = true;
@@ -275,8 +272,8 @@ function sendCompositeRequest1(transactionId, data){
 	    	//Pull out response
 	    	data=this.responseText;
 
-	    	//Keep sending to ../json/authenticate with composite until and authn success response
-	    	pollForResult(transactionId,data)
+	    	//10 sec time out before sending second request
+	    	setTimeout(sendCompositeRequest2(transactionId,data),10000);
 
 	    }
 	}
