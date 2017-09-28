@@ -94,7 +94,7 @@ function checkSession(tokenId) {
 
 	    		//Pull out the expiration time and update in the UI
 	    		expirationTime=JSON.parse(this.responseText).maxIdleExpirationTime;
-	    		var date = new Date(texpirationTimeime);
+	    		var date = new Date(expirationTime);
 	    		document.getElementById("sessionExpiration").innerHTML='<span class="greenText">' + date.toString() + '</span>';
 
 	    		//Pull out the user associated with the cookie
