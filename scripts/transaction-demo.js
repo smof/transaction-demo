@@ -248,7 +248,17 @@ function sendCompositeRequest1(transactionId){
 
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === 4) {
-	    console.log(this.responseText);
+
+		    console.log(this.responseText);
+
+			document.getElementById("transactionPDPResponse").innerHTML="Push Sent";
+
+		    //Pull out response
+		    data=this.responseText;
+
+		    //10 sec time out before sending second request
+		    setTimeout(sendCompositeRequest2(transactionId,data),10000);
+
 	  }
 	});
 
@@ -260,6 +270,7 @@ function sendCompositeRequest1(transactionId){
 
 	xhr.send(data);
 
+	/**
 	//Wait until the request has completed then ping response back to the ui
 	xhr.onreadystatechange = function () {
 	    var DONE = this.DONE || 4;
@@ -267,16 +278,10 @@ function sendCompositeRequest1(transactionId){
 	    	
 	    	//Push received at this point
 	    	//Update the UI to indicate push has been sent
-	    	document.getElementById("transactionPDPResponse").innerHTML="Push Sent";
-
-	    	//Pull out response
-	    	data=this.responseText;
-
-	    	//10 sec time out before sending second request
-	    	setTimeout(sendCompositeRequest2(transactionId,data),10000);
+	    	
 
 	    }
-	}
+	}**/
 }
 
 
