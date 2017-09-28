@@ -243,7 +243,7 @@ function sendCompositeRequest1(transactionId){
 		    data=this.responseText;
 
 		    //10 sec time out before sending second request
-		    document.setTimeout(sendCompositeRequest2(transactionId,data),10000);
+		    document.setTimeout(sendCompositeRequest2,10000, transactionId, data);
 
 	  }
 	});
