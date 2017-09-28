@@ -243,7 +243,7 @@ function processSecureTransfer(units) {
 
 
 //Sends composite advice
-function sendCompositeRequest(transactionId, data){
+function sendCompositeRequest1(transactionId, data){
 
 	//Allows passing of the received data payload, first time run through this isn't needed so we default to empty object
 	data = data ? data : ("{}");
@@ -271,10 +271,61 @@ function sendCompositeRequest(transactionId, data){
 	    if (this.readyState === DONE){
 	    	
 	    	//Push received at this point
+	    	//Update the UI to indicate push has been sent
+	    	document.getElementById("transactionPDPResponse").innerHTML="Push Sent";
+
+	    	//Pull out response
+	    	data=this.responseText;
+
+	    	//Keep sending to ../json/authenticate with composite until and authn success response
+	    	pollForResult(transactionId,data)
+
 	    }
 	}
 }
 
+function pollForResult(transactionId, data) {
+
+	sendCompositeRequest2(transactionId, data);
+
+}
+
+//Sends composite advice
+function sendCompositeRequest2(transactionId, data){
+
+	//Allows passing of the received data payload, first time run through this isn't needed so we default to empty object
+	data = data ? data : ("{}");
+		
+	var xhr = new XMLHttpRequest();
+	xhr.withCredentials = true;
+
+	xhr.addEventListener("readystatechange", function () {
+	  if (this.readyState === 4) {
+	    console.log(this.responseText);
+	  }
+	});
+
+
+	xhr.open("POST", "/openam/json/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%0A%3CAttributeValuePair%3E%0A%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%0A%3CValue%3E"+transactionId+"%3C%2FValue%3E%0A%3C%2FAttributeValuePair%3E%0A%3C%2FAdvices%3E");
+	xhr.setRequestHeader("iPlanetDirectoryPro", getCookie("iPlanetDirectoryPro"));
+	xhr.setRequestHeader("content-type", "application/json");
+	xhr.setRequestHeader("cache-control", "no-cache");
+
+	xhr.send(data);
+
+	//Wait until the request has completed then ping response back to the ui
+	xhr.onreadystatechange = function () {
+	    var DONE = this.DONE || 4;
+	    if (this.readyState === DONE){
+	    	
+	    	//Push received at this point
+	    	//Update the UI to indicate push has been sent
+	    	document.getElementById("transactionPDPResponse").innerHTML=this.responseText;
+
+
+	    }
+	}
+}
 
 //Logs user out, remove's cookie kills server side session
 function logout(userName){
