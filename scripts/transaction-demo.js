@@ -226,7 +226,7 @@ function processSecureTransfer(units) {
 	    	//Check for presence of transaction Id from the policy response
 	    	if(JSON.parse(this.responseText)[0].advices.TransactionConditionAdvice[0]){
 
-	    		transactionId=JSON.parse(this.responseText)[0].advices.TransactionConditionAdvice[0]);
+	    		transactionId=JSON.parse(this.responseText)[0].advices.TransactionConditionAdvice[0];
 
 	    		//Send transactionId over to the ../json/authenticate endpoint with compositve
 	    		sendCompositeRequest(transactionId)
