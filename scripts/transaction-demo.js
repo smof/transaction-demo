@@ -23,7 +23,30 @@ function login() {
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === 4) {
 	    console.log(this.responseText);
+	    
+	    //console.log(xhr.responseText())
+	    //Strip out tokenId and store and update the UI
+	    if(JSON.parse(this.responseText).tokenId){
+
+	    		tokenId=JSON.parse(this.responseText).tokenId;
+	    		//Send tokenId back to the UI
+	    		document.getElementById("tokenId").innerHTML='<span class="greenText">' + tokenId + '</span>'
+	    		//Update Session Expiration
+	    		checkSession(tokenId);
+
+	    } else {
+
+	    		document.getElementById("tokenId").innerHTML='<span class="redText">' + this.responseText + '</span>'	
+
+	    }
+
+	    //Flush out the submitted fields
+		document.getElementById("userName").value="";
+		document.getElementById("password").value="";
+
+
 	  }
+
 	});
 
 	xhr.open("POST", "/openam/json/authenticate");
@@ -33,35 +56,6 @@ function login() {
 	xhr.setRequestHeader("cache-control", "no-cache");
 
 	xhr.send(data);
-
-	//Wait until the request has completed then ping response back to the ui
-	xhr.onreadystatechange = function () {
-	    var DONE = this.DONE || 4;
-	    if (this.readyState === DONE){
-	    	
-	    	//console.log(xhr.responseText())
-	    	//Strip out tokenId and store and update the UI
-	    	if(JSON.parse(this.responseText).tokenId){
-
-	    		tokenId=JSON.parse(this.responseText).tokenId;
-	    		//Send tokenId back to the UI
-	    		document.getElementById("tokenId").innerHTML='<span class="greenText">' + tokenId + '</span>'
-	    		//Update Session Expiration
-	    		checkSession(tokenId);
-
-	    	} else {
-
-	    		document.getElementById("tokenId").innerHTML='<span class="redText">' + this.responseText + '</span>'	
-
-	    	}
-
-	    		//Flush out the submitted fields
-			document.getElementById("userName").value="";
-			document.getElementById("password").value="";
-	    	
-	    }
-	}
-
 
 }
 
@@ -92,7 +86,29 @@ function checkSession(tokenId) {
 
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === 4) {
+
 	    console.log(this.responseText);
+	   
+	    //Strip out session expiration and username and update the UI
+	    	if(JSON.parse(this.responseText).maxIdleExpirationTime){
+
+	    		//Pull out the expiration time and update in the UI
+	    		expirationTime=JSON.parse(this.responseText).maxIdleExpirationTime;
+	    		var date = new Date(texpirationTimeime);
+	    		document.getElementById("sessionExpiration").innerHTML='<span class="greenText">' + date.toString() + '</span>';
+
+	    		//Pull out the user associated with the cookie
+	    		document.getElementById("tokenUser").innerHTML='<span class="greenText">' + JSON.parse(this.responseText).username + '</span>';
+	    		
+	    		//Enable process button
+	    		document.getElementById("processButton").disabled=false;
+
+	    	} else {
+
+	    		document.getElementById("sessionExpiration").innerHTML="Invalid Token"
+	    		document.getElementById("tokenUser").innerHTML="Not Set"	
+
+	    	}
 	  }
 	});
 
@@ -103,34 +119,6 @@ function checkSession(tokenId) {
 	xhr.setRequestHeader("cache-control", "no-cache");
 
 	xhr.send(data);
-
-	//Wait until the request has completed then ping response back to the ui
-	xhr.onreadystatechange = function () {
-	    var DONE = this.DONE || 4;
-	    if (this.readyState === DONE){
-	    	
-	    	//Strip out session expiration and username and update the UI
-	    	if(JSON.parse(this.responseText).maxIdleExpirationTime){
-
-	    		//Pull out the expiration time and update in the UI
-	    		document.getElementById("sessionExpiration").innerHTML='<span class="greenText">' + JSON.parse(this.responseText).maxIdleExpirationTime + '</span>';	
-	    		//Pull out the user associated with the cookie
-	    		document.getElementById("tokenUser").innerHTML='<span class="greenText">' + JSON.parse(this.responseText).username + '</span>';
-	    		//Enable process button
-	    		document.getElementById("processButton").disabled=false;
-
-	    	} else {
-
-	    		document.getElementById("sessionExpiration").innerHTML="Invalid Token"
-	    		document.getElementById("tokenUser").innerHTML="Not Set"	
-
-	    	}
-	    	
-	    }
-	}
-
-	
-
 }
 
 //Does REST calls for PDP eval
