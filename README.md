@@ -5,7 +5,7 @@ A simple single-page-app, that uses the push authorization functionality in AM 5
 <br/>
 <b>Installation</b>
 <br/>
-Git clone into the ../webapps/ directory of Tomcat (or similar container).  Navivate to ../transaction-demo on deployed server.  Note deploy in same container as the AM you are testing against, as no CORS configuration has been completed, so assumes same host.
+Git clone into the ../webapps/ directory of Tomcat (or similar container).  Navigate to ../transaction-demo on deployed server.  Note deploy in same container as the AM you are testing against, as no CORS configuration has been completed, so assumes same host.
 <br/>
 <br/>
 ![ScreenShot](./transaction-demo-app.png)
