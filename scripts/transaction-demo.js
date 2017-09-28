@@ -205,7 +205,18 @@ function sendCompositeRequest2(transactionId, data){
 	  if (this.readyState === 4) {
 	    console.log(this.responseText);
 
-	    document.getElementById("transactionPDPResponse").innerHTML=this.responseText;
+	    //Check to see what the response from AM looks like - if it contains a tokenId the push response has been recieved by AM and we can spin out
+	    if(JSON.parse(this.responseText).tokenId)){
+			
+			document.getElementById("transactionPDPResponse").innerHTML='<span class="greenText">Push Completed - Transfer Approved</span>';
+			document.getElementById("units").innerHTML= (document.getElementById("units").innerHTML) - units;
+
+	    } else {
+
+	    	//Another run of poll
+	    	pollAM(transactionId,data)
+	    }
+	    
 
 	  }
 	});
@@ -221,7 +232,11 @@ function sendCompositeRequest2(transactionId, data){
 
 }
 
+//3 second delay for polling
+function pollAM(transactionId,data) {
 
+	setTime(sendCompositeRequest2,3000,transactionId,data);
+}
 
 //Sends composite advice
 function sendCompositeRequest1(transactionId){
@@ -242,8 +257,8 @@ function sendCompositeRequest1(transactionId){
 		    //Pull out response
 		    data=this.responseText;
 
-		    //10 sec time out before sending second request
-		    setTimeout(sendCompositeRequest2,10000, transactionId, data);
+		    //Start polling to see if push has been finished
+		    pollAM(transactionId,data)
 
 	  }
 	});
