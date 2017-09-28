@@ -209,7 +209,7 @@ function sendCompositeRequest2(transactionId, data){
 	    if(JSON.parse(this.responseText).tokenId){
 			
 			document.getElementById("transactionPDPResponse").innerHTML='<span class="greenText">Push Completed - Transfer Approved</span>';
-			document.getElementById("units").innerHTML= (document.getElementById("units").innerHTML) - document.getElementById(transferAmount).value;
+			document.getElementById("units").innerHTML= (document.getElementById("units").innerHTML) - document.getElementById("transferAmount").value;
 
 	    } else {
 
