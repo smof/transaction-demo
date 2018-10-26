@@ -240,7 +240,8 @@ function sendCompositeRequest1(transactionId){
 
 		    console.log(this.responseText);
 
-			document.getElementById("transactionPDPResponse").innerHTML="Push Sent";
+			//document.getElementById("transactionPDPResponse").innerHTML="Push Sent";
+			document.getElementById("transactionPDPResponse").innerHTML='<img src="./images/waiting.gif" height="60" width="100"/>';
 
 		    //Pull out response
 		    data=this.responseText;
