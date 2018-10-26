@@ -194,7 +194,7 @@ function sendCompositeRequest2(transactionId, data){
 	    console.log(this.responseText);
 
 	    //Check to see what the response from AM looks like - if it contains a tokenId the push response has been recieved by AM and we can spin out
-	    if(JSON.parse(this.responseText).successUrl.includes("secureTransfer"){
+	    if(JSON.parse(this.responseText).successUrl.includes("secureTransfer")){
 			
 			document.getElementById("transactionPDPResponse").innerHTML='<span class="greenText">Push Completed - Transfer Approved</span>';
 			document.getElementById("units").innerHTML= (document.getElementById("units").innerHTML) - document.getElementById("transferAmount").value;
